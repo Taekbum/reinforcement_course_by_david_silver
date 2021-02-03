@@ -41,7 +41,7 @@ episodes = int(1e4)
 lmds = list(np.arange(11)/10)
 
 # output
-mselamdas = np.zeros((len(lmds), episodes))
+mse_history = np.zeros((len(lmds), episodes))
 finalMSE = np.zeros(len(lmds))
 
 for idx, lmd in enumerate(lmds):
@@ -82,6 +82,8 @@ for idx, lmd in enumerate(lmds):
 
         mse = np.sum(np.square(Q-trueQ)) / (21*10*2)
 
+        mse_history[idx, episode] = mse
+
     #mse = np.sum(np.square(Q-trueQ)) / (21*10*2)
     #mselamdas[idx] = mse
     finalMSE[idx] = mse
@@ -93,6 +95,8 @@ tic = time.time()
 print("Implementation of SARSA(lamda) done! Comsumed time: %fs" % (tic - toc))
 
 utils.plotMseLamdas(finalMSE, lmds)
+utils.plotMseEpisodesLambdas(mse_history)
+
 
 
 

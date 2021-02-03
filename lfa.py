@@ -65,6 +65,7 @@ def allQ():
 episodes = int(1e4)
 lmds = list(np.arange(0, 11)/10)
 mselamdas = np.zeros(len(lmds))
+mse_history = np.zeros((len(lmds), episodes))
 
 for idx, lmd in enumerate(lmds): 
     
@@ -99,7 +100,10 @@ for idx, lmd in enumerate(lmds):
         if r == 1:
             wins += 1
 
-    mse = np.sum(np.square(allQ()-trueQ.ravel())) / (21*10*2)
+        mse = np.sum(np.square(allQ()-trueQ.ravel())) / (21*10*2)
+        mse_history[idx, episode] = mse
+
+    
     mselamdas[idx] = mse
     print("Lambda %.1f, Episode 10000, MSE %5.3f, Win prob %.3f" % (lmd, mse, wins / (episode + 1) ))
     print("--------")
@@ -109,6 +113,7 @@ print("Implementation of lfa done! Comsumed time: %fs" % (tic - toc))
 
 
 utils.plotMseLamdas(mselamdas, lmds)
+utils.plotMseEpisodesLambdas(mse_history)
 
         
             
